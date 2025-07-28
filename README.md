@@ -2,7 +2,7 @@
 
 # 🧠 Emolog Detector - Klasifikasi Emosi Bahasa Indonesia
 
-Deteksi emosi dari teks Bahasa Indonesia menggunakan model IndoBERT yang sudah di-finetune. Model ini dapat mengenali emosi seperti **Bersyukur**, **Marah**, **Sedih**, **Senang**, dan **Stress**. Cocok buat riset NLP, sistem monitoring kesehatan mental, atau chatbot yang lebih manusiawi 😌.
+Deteksi emosi dari teks Bahasa Indonesia menggunakan model IndoBERT yang sudah di-finetune. Model ini dapat mengenali emosi seperti **Bersyukur**, **Marah**, **Sedih**, **Senang**, dan **Stress**.
 
 ---
 
