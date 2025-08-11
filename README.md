@@ -1,84 +1,22 @@
+# 🧠 Emolog Detector & 🤍 Alora Chatbot 
 
+Repo ini berisi **dua komponen berbeda** yang dapat digunakan **mandiri**:
 
-# 🧠 Emolog Detector - Klasifikasi Emosi Bahasa Indonesia
+* **Emolog Detector** — klasifikasi emosi teks Bahasa Indonesia berbasis IndoBERT (label: *Bersyukur, Marah, Sedih, Senang, Stress*).
+* **Alora Chatbot** — chatbot empatik berbahasa Indonesia berbasis LLM 
 
-Deteksi emosi dari teks Bahasa Indonesia menggunakan model IndoBERT yang sudah di-finetune. Model ini dapat mengenali emosi seperti **Bersyukur**, **Marah**, **Sedih**, **Senang**, dan **Stress**.
 
 ---
 
-## 📦 Fitur Utama
+## Komponen
 
-- 🔍 Deteksi satu teks (single prediction)
-- 🧪 Batch prediction (multi-text)
-- 📊 Skor probabilitas untuk semua label emosi
-- 🧠 Menggunakan IndoBERT yang sudah di-finetune
-- 🗣️ Model Bahasa Indonesia
+### 1) Emolog Detector
 
----
+* Klasifikasi emosi untuk satu atau banyak teks.
+* Mengembalikan **label** dan **skor probabilitas** per label.
+* Model: `Atherizz/emolog-indobert` (Hugging Face).
 
-## 🛠️ Instalasi
-
-### 1. Clone Repository *(kalau belum)*
-```bash
-git clone https://github.com/username/emolog-detector.git
-cd emolog-detector
-````
-
-```bash
-python -m venv .env
-# Aktifkan (Windows PowerShell)
-.env\Scripts\Activate.ps1
-# atau (Command Prompt)
-.env\Scripts\activate.bat
-# atau (macOS/Linux)
-source .env/bin/activate
-```
-
-### 3. Install Dependencies
-
-```bash
-pip install torch transformers numpy
-```
-
----
-
-## 🚀 Menjalankan Program
-
-Jalankan file utama:
-
-```bash
-python emolog_test.py
-```
-
-Kamu akan masuk ke mode interaktif:
-
-```
-🎯 TESTING MODEL EMOLOG DETECTOR
-🔄 Mode Interaktif - Ketik 'quit' untuk keluar
-
-Masukkan teks: aku merasa capek dan tidak berguna
-🎯 Emosi: Sedih (0.942)
-📊 Semua skor:
-   Bersyukur : 0.002
-   Marah     : 0.005
-   Sedih     : 0.942
-   Senang    : 0.010
-   Stress    : 0.041
-```
-
----
-
-## 🧠 Cara Kerja
-
-1. Teks dimasukkan oleh pengguna.
-2. Tokenizer mengubah teks menjadi input tensor.
-3. Model memproses input menggunakan IndoBERT yang sudah di-finetune.
-4. Output berupa skor probabilitas untuk tiap label emosi.
-5. Skor tertinggi diambil sebagai label prediksi.
-
----
-
-## 🧬 Label Emosi
+**Label Emosi**
 
 | ID | Label     |
 | -- | --------- |
@@ -88,24 +26,27 @@ Masukkan teks: aku merasa capek dan tidak berguna
 | 3  | Senang    |
 | 4  | Stress    |
 
+### 2) Alora Chatbot
+
+* Chatbot empatik & natural berbahasa Indonesia.
+* Dapat berjalan murni menggunakan LLM (tanpa Emolog).
+* Memanfaatkan memori/RAG untuk konteks percakapan.
+* Prinsip respons: validasi perasaan, bahasa netral, dan aman.
+
 ---
 
-## 🗂️ Struktur Folder
+## Instalasi
 
+```bash
+git clone https://github.com/username/emolog-detector.git
+cd emolog-detector
+
+python -m venv .env
+# Windows PowerShell
+. .\venv\Scripts\Activate.ps1
+# macOS/Linux
+source .env/bin/activate
+
+pip install -r requirements.txt
 ```
-emolog-test-project/
-├── emolog_test.py         # Script utama
-├── README.md              # Dokumentasi ini
-├── .env/                  # Virtual environment (opsional)
-```
-
----
-
-## 🌐 Model
-
-Model yang digunakan:
-📦 [Atherizz/emolog-indobert](https://huggingface.co/Atherizz/emolog-indobert)
-
----
-
 
