@@ -7,7 +7,7 @@ __pycache__/
 *.sqlite3
 
 
-.env/
+.env
 venv/
 ENV/
 env/
@@ -16,4 +16,3 @@ env/
 .vscode/
 .DS_Store
 
-requirements.txt

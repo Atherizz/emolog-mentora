@@ -7,8 +7,8 @@ class EmologDetector:
         """
         Inisialisasi detector emosi
         """
-        print(f"🔄 Memuat model dari {model_path}...")
         self.tokenizer = AutoTokenizer.from_pretrained(model_path)
+        print(f"🔄 Memuat model dari {model_path}...")
         self.model = AutoModelForSequenceClassification.from_pretrained(model_path)
         
         self.id2label = {

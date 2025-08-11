@@ -1,9 +1,10 @@
 from fastapi import FastAPI
-from app.api.routes import emolog
+from app.api.routes import emolog, alora
 
 app = FastAPI(title="Emolog API")
 
 app.include_router(emolog.router, prefix="/api")
+app.include_router(alora.router, prefix="/api")
 
 # @app.on_event("startup")
 # # def on_startup():
