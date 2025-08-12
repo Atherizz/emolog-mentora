@@ -5,15 +5,24 @@ from pydantic import BaseModel
 router = APIRouter()
 chatbot = Chatbot()
 
-class TextInput(BaseModel):
+class ChatRequest(BaseModel):
     prompt: str
-    # user_id: int
-    
-    
+    session_id: str
+
+class UpsertRequest(BaseModel):
+    prompt: str
+    resp: str
+    user_id: int
+    session_id: str
+    message_order: int
     
 @router.post("/alora")
-def alora_chatbot(input: TextInput):
-    response = chatbot.load_llm(input.prompt)
-    return {"response" : response}
+def alora_chatbot(input: ChatRequest):
+    response = chatbot.load_llm(input.prompt, input.session_id)
+    return {"message" : response}
+
+@router.post("/upsert-vector")
+def upsert_vector(input: UpsertRequest):
+    chatbot.upsert_vector(input.prompt, input.resp, input.user_id, input.session_id, input.message_order)
 
 

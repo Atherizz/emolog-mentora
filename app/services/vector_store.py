@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from pinecone import Pinecone
 from langchain_openai import OpenAIEmbeddings
 from datasets import load_dataset
-from load_pinecone import loadPinecone
+from app.services.load_pinecone import loadPinecone
 
 load_dotenv()
 pineconeApiKey = os.getenv("PINECONE_API_KEY")
@@ -19,11 +19,6 @@ dimension = 1536
 pc = Pinecone(api_key=pineconeApiKey)
 
 index = loadPinecone(index_name, dimension)
-
-desc = pc.describe_index(index_name)
-print(desc.status)
-print(f"Index '{index_name}' siap digunakan 🚀")
-print(index.describe_index_stats())
 
 embed_model = OpenAIEmbeddings(model=model_name)
 
@@ -56,6 +51,15 @@ for i, row in enumerate(dataset):
 if batch_texts:
     embeds = embed_model.embed_documents(batch_texts)
     index.upsert(vectors=list(zip(batch_ids, embeds, batch_metadatas)))
+    
+    
+    
+    
+    
+# desc = pc.describe_index(index_name)
+# print(desc.status)
+# print(f"Index '{index_name}' siap digunakan 🚀")
+# print(index.describe_index_stats())
 
 # texts = [
 #     "this is the first chunk of text",
