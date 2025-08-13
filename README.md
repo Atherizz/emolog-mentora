@@ -1,19 +1,18 @@
-# 🧠 Emolog Detector & 🤍 Alora Chatbot 
+# Emolog Detector & Alora Chatbot
 
-Repo ini berisi **dua komponen berbeda** yang dapat digunakan **mandiri**:
+This repository contains **two separate components**
 
-* **Emolog Detector** — klasifikasi emosi teks Bahasa Indonesia berbasis IndoBERT (label: *Bersyukur, Marah, Sedih, Senang, Stress*).
-* **Alora Chatbot** — chatbot empatik berbahasa Indonesia berbasis LLM 
+* **Emolog Detector** — emotion classification for Indonesian text based on IndoBERT (label: *Bersyukur, Marah, Sedih, Senang, Stress*).
+* **Alora Chatbot** — empathetic Indonesian-language chatbot powered by LLM, enhanced with a **Retrieval-Augmented Generation (RAG)** pipeline.
+  * **RAG process**: stores and retrieves relevant conversation history or external knowledge from a vector database, then feeds it into the LLM to maintain context, accuracy, and empathy throughout the conversation.
+  * This allows the chatbot to **remember past interactions**, respond consistently, and adapt its tone based on the user’s emotional state.
 
-
----
-
-## Komponen
+## Components
 
 ### 1) Emolog Detector
 
-* Klasifikasi emosi untuk satu atau banyak teks.
-* Mengembalikan **label** dan **skor probabilitas** per label.
+* Classifies emotions for single or multiple texts.
+* Returns **label** for each label.
 * Model: `Atherizz/emolog-indobert` (Hugging Face).
 
 **Label Emosi**
@@ -28,14 +27,14 @@ Repo ini berisi **dua komponen berbeda** yang dapat digunakan **mandiri**:
 
 ### 2) Alora Chatbot
 
-* Chatbot empatik & natural berbahasa Indonesia.
-* Dapat berjalan murni menggunakan LLM (tanpa Emolog).
-* Memanfaatkan memori/RAG untuk konteks percakapan.
-* Prinsip respons: validasi perasaan, bahasa netral, dan aman.
+* Empathetic & natural Indonesian-language chatbot.
+* Can run purely using LLM (without Emolog).
+* Utilizes memory/RAG for conversation context.
+* Response principles: validate feelings, use neutral and safe language.
 
 ---
 
-## Instalasi
+## Installation
 
 ```bash
 git clone https://github.com/username/emolog-detector.git
@@ -48,5 +47,3 @@ python -m venv .env
 source .env/bin/activate
 
 pip install -r requirements.txt
-```
-
