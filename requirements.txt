@@ -10,10 +10,6 @@ datasets>=2.20
 pandas>=2.2
 python-dotenv>=1.0
 
-# === DB ===
-pymysql>=1.1
-sqlmodel>=0.0.22
-
 # === LangChain core + providers ===
 langchain>=0.2.12
 langchain-openai>=0.1.13
