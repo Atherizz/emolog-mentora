@@ -15,7 +15,7 @@ This repository contains **two separate components**
 * Returns **label** for each label.
 * Model: `Atherizz/emolog-indobert` (Hugging Face).
 
-**Label Emosi**
+**Emotion Label**
 
 | ID | Label     |
 | -- | --------- |
