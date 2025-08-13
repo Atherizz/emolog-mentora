@@ -4,9 +4,6 @@ import numpy as np
 
 class EmologDetector:
     def __init__(self, model_path="Atherizz/emolog-indobert"):
-        """
-        Inisialisasi detector emosi
-        """
         print(f"🔄 Memuat model dari {model_path}...")
         self.tokenizer = AutoTokenizer.from_pretrained(model_path)
         self.model = AutoModelForSequenceClassification.from_pretrained(model_path)
@@ -23,16 +20,6 @@ class EmologDetector:
         print("✅ Model berhasil dimuat!")
     
     def predict_emotion(self, text, return_all_scores=False):
-        """
-        Prediksi emosi dari teks
-        
-        Args:
-            text (str): Teks yang akan diprediksi
-            return_all_scores (bool): Jika True, return semua skor emosi
-            
-        Returns:
-            dict: Hasil prediksi
-        """
         # Tokenization
         inputs = self.tokenizer(
             text, 
@@ -78,7 +65,6 @@ class EmologDetector:
         return results
 
 def main():
-    # Inisialisasi detector
     detector = EmologDetector()
     
     print("\n" + "="*50)

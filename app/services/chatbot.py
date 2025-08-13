@@ -37,7 +37,8 @@ class Chatbot:
             docs = vs.similarity_search(
             query,
             k=k,
-            filter={"session_id": {"$eq": sid}},
+            filter={"session_id": sid},
+            namespace="chat"
         )
             
             return HumanMessage(content=(

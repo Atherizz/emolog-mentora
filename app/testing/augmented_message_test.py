@@ -4,13 +4,11 @@ from langchain_pinecone import PineconeVectorStore
 from langchain_openai import OpenAIEmbeddings
 from langchain.schema import HumanMessage
 
-# --- config ---
 INDEX_NAME = "alora-rag-small"
 TEXT_FIELD = "content"
 EMBED_MODEL = "text-embedding-3-small"
 
-# HARDCODE untuk testing
-SESSION_ID = "a1b30d41-385e-414f-88af-e89c90079440"  # pastikan sama persis dg metadata
+SESSION_ID = "a1b30d41-385e-414f-88af-e89c90079440"  
 QUERY = "aku lagi cemas soal besok ketemu dosen pembimbing, takut dimarahin"
 K = 3
 
@@ -32,14 +30,14 @@ def build_augmented_message(query: str, k: int = 3, session_id: str | None = Non
             text_key=TEXT_FIELD,
             namespace="chat"
         )
-
-        # ✅ Equality filter tanpa $eq + pakai sid yg sudah strip
         filter_condition = {"session_id": sid}
 
         docs = vs.similarity_search(
             query,
-            k=k * 4,               # ambil lebih banyak kandidat dulu
-            filter=filter_condition
+            k=k * 4,               
+            filter=filter_condition,
+            namespace="chat"
+            
         )
         print(f"[RAG] Found {len(docs)} docs for session_id={sid}")
 
@@ -52,7 +50,6 @@ def build_augmented_message(query: str, k: int = 3, session_id: str | None = Non
                 "Balas sebagai Alora."
             ))
 
-        # Urutkan kronologis (message_order bisa float)
         docs_sorted = sorted(docs, key=lambda d: float((d.metadata or {}).get("message_order", 0.0)))
         recent_docs = docs_sorted[-k:]
 
@@ -62,7 +59,6 @@ def build_augmented_message(query: str, k: int = 3, session_id: str | None = Non
             print(f"  {i}. order={md.get('message_order')} role={md.get('role')} sid={md.get('session_id')}")
             print(f"     {_snip(d.page_content, 120)}")
 
-        # Format dialog rapi
         parts = []
         for d in recent_docs:
             role = (d.metadata or {}).get("role", "user")
@@ -78,7 +74,6 @@ def build_augmented_message(query: str, k: int = 3, session_id: str | None = Non
             "Balas sebagai Alora."
         ))
 
-    # SEED/default mode
     print("[RAG] MODE=SEED (default namespace)")
     vs = PineconeVectorStore(
         index_name=INDEX_NAME,
