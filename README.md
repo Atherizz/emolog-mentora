@@ -40,7 +40,7 @@ This repository contains **two separate components**
 git clone https://github.com/username/emolog-detector.git
 cd emolog-detector
 
-python -m venv .env
+python -m venv venv
 # Windows PowerShell
 . .\venv\Scripts\Activate.ps1
 # macOS/Linux
