@@ -1,10 +1,11 @@
 from fastapi import FastAPI
-from app.api.routes import emolog, alora
+from app.api.routes import decision_support, emolog, alora
 
 app = FastAPI(title="Emolog API")
 
 app.include_router(emolog.router, prefix="/api")
 app.include_router(alora.router, prefix="/api")
+app.include_router(decision_support.router, prefix="/api")
 
 # @app.on_event("startup")
 # # def on_startup():
