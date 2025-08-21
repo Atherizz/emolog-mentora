@@ -1,74 +1,59 @@
+import os, threading
+import numpy as np
 import torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
-import numpy as np
 
 class EmologDetector:
     def __init__(self, model_path="Atherizz/emolog-indobert"):
-        """
-        Inisialisasi detector emosi
-        """
-        self.tokenizer = AutoTokenizer.from_pretrained(model_path)
         print(f"🔄 Memuat model dari {model_path}...")
-        self.model = AutoModelForSequenceClassification.from_pretrained(model_path)
-        
+        self.tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=True)
+        self.model = AutoModelForSequenceClassification.from_pretrained(
+            model_path,
+            torch_dtype="auto" if torch.cuda.is_available() else None
+        )
+        self.model.eval()
+        self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.model.to(self.device)
+
         self.id2label = {
             0: 'Bersyukur',
-            1: 'Marah', 
+            1: 'Marah',
             2: 'Sedih',
             3: 'Senang',
             4: 'Stress'
         }
-        
-        self.model.eval()
         print("✅ Model berhasil dimuat!")
-    
-    def predict_emotion(self, text, return_all_scores=False):
-        """
-        Prediksi emosi dari teks
-        
-        Args:
-            text (str): Teks yang akan diprediksi
-            return_all_scores (bool): Jika True, return semua skor emosi
-            
-        Returns:
-            dict: Hasil prediksi
-        """
-        # Tokenization
+
+    def predict_emotion(self, text: str, return_all_scores: bool = False):
         inputs = self.tokenizer(
-            text, 
-            return_tensors="pt", 
-            truncation=True, 
+            text,
+            return_tensors="pt",
+            truncation=True,
             padding=True,
             max_length=128
-        )
-        
-        # Prediction
+        ).to(self.device)
+
         with torch.no_grad():
             outputs = self.model(**inputs)
-            predictions = torch.nn.functional.softmax(outputs.logits, dim=-1)
-        
-        # Konversi ke numpy
-        scores = predictions.cpu().numpy()[0]
-        
-        # Ambil prediksi terbaik
-        predicted_id = np.argmax(scores)
-        predicted_label = self.id2label[predicted_id]
-        
-        result = predicted_label
-        
-        if return_all_scores:
-            all_scores = {self.id2label[i]: float(score) for i, score in enumerate(scores)}
-            result['all_scores'] = all_scores
-            
-        return result
-    
-    def predict_batch(self, texts):
-        """
-        Prediksi batch teks sekaligus
-        """
-        results = []
-        for text in texts:
-            result = self.predict_emotion(text)
-            results.append(result)
-        return results
+            probs = torch.softmax(outputs.logits, dim=-1)[0].cpu().numpy()
 
+        idx = int(np.argmax(probs))
+        label = self.id2label[idx]
+
+        if return_all_scores:
+            return {
+                "label": label,
+                "scores": {self.id2label[i]: float(s) for i, s in enumerate(probs)}
+            }
+        return {"label": label}
+
+_detector = None
+_lock = threading.Lock()
+
+def get_detector() -> EmologDetector:
+    global _detector
+    if _detector is None:
+        with _lock:
+            if _detector is None:
+                _detector = EmologDetector()
+    return _detector
